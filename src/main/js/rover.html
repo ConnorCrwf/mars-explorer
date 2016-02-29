@@ -1,0 +1,12 @@
+<div id="rover{{ rover.id }}" class="rover">
+  <h1>Rover {{ rover.id }}</h1>
+  <img class='sensors-camera' ng-src="{{rover.sensors.camera.uri}}" alt="[Rover Camera]"/>
+  <p class='heartbeat'>Last Heartbeat: <input ng-model="rover.heartbeat"></input></p>
+  <p class='sensors-range'>Range: <input ng-model="rover.sensors.range"></input></p>
+  <input ng-model="rover.navigation.left" class="motor motor-left" id="left-motor-{{ rover.id }}" type="range" value="0" min="-1" max="1" step="0.1" />
+  <label for='left-motor-{{ rover.id }}'>{{ rover.navigation.left }}</label>
+  <input ng-model="rover.navigation.right" class="motor motor-right" id="right-motor-{{ rover.id }}" type="range" value="0" min="-1" max="1" step="0.1" />
+  <label for='right-motor-{{ rover.id }}'>{{ rover.navigation.right }}</label>
+  <br />
+  <button ng-click="shutdown()">Shutdown</button>
+</div>

@@ -1,0 +1,24 @@
+{
+  "name": "mars",
+  "authors": [
+    "Joe Mirizio <joe@joemirizio.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0",
+    "autobahnjs": "autobahn#^0.9.9",
+    "leapjs": "^0.6.4"
+  }
+}
