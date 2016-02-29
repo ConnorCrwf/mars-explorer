@@ -43,8 +43,8 @@ class Rover(threading.Thread):
     def set_motors(self, left, right):
         l = abs(left)
         r = abs(right)
-        left_dir = 0 if l < 0 else 1
-        right_dir = 0 if r < 0 else 1
+        left_dir = 0 if left < 0 else 1
+        right_dir = 0 if right < 0 else 1
         print('set_motors({}, {}, {}, {})'.format(l, left_dir, r, right_dir))
         self.rr.set_motors(l, left_dir, r, right_dir)
 
