@@ -1,2 +1,6 @@
 *.pyc
 .ropeproject
+
+.crossbar/node.pid
+
+bower_components

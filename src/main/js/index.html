@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html ng-app="mars">
+    <head>
+        <meta charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="css/style.css">
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/autobahnjs/autobahn.min.js"></script>
+        <script src="bower_components/leapjs/leap-0.6.4.min.js"></script>
+        <script src="app/app.js"></script>
+    </head>
+    <body>
+        <div ng-controller="StationController as station">
+          <rover ng-repeat="rover in station.rovers"></rover>
+        </div>
+    </body>
+</html>
