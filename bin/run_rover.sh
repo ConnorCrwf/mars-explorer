@@ -1,4 +1,8 @@
 #!/bin/bash
 
-cd /home/pi/Code/mars/src
-./rover.py | tee /var/log/mars/output.log
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+logDir=/var/log/mars
+
+mkdir -p $logDir
+
+$dir/../src/main/python/rover.py | tee $logDir/output.log
