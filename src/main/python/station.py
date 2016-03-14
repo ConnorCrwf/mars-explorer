@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import random
+from ConfigParser import ConfigParser
 
 from twisted.internet import reactor
 from twisted.internet.defer import inlineCallbacks
@@ -36,11 +37,19 @@ class Component(ApplicationSession):
         reactor.stop()
 
 if __name__ == '__main__':
-    uri = u'ws://localhost:8080/ws'
+    config = ConfigParser()
+    config.read('config.ini')
+
+    host = config.get('main', 'host')
+    port = config.get('main', 'port')
+    address = u'ws://{}:{}/ws'.format(host, port)
     realm = u'mars'
 
+    print('Connecting to {} in realm {}...'.format(address, realm))
+
     # Start application
-    runner = ApplicationRunner(uri, realm, extra={
+    runner = ApplicationRunner(address, realm, extra={
+        'config': config,
         'rover_id': 1
     })
     runner.run(Component)

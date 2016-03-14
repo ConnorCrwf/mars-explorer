@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import uuid
-import random
 from ConfigParser import ConfigParser
 
 from twisted.internet import reactor
@@ -13,6 +12,7 @@ from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 
 from client import Rover
 
+
 class Component(ApplicationSession):
 
     @inlineCallbacks
@@ -21,8 +21,6 @@ class Component(ApplicationSession):
         self.id_ = str(self.conf.get('rover', 'id') or uuid.uuid4())
         self.rover = self.config.extra['rover']
         self.rate = float(self.conf.get('rover', 'rate'))
-        # results = yield self.subscribe(self)
-        # failures = [r for r in results if isinstance(r, Failure)]
         yield self.subscribe(self.on_navigation_update,
                              'mars.rover.' + self.id_ + '.navigation')
         yield self.subscribe(self.on_shutdown_signal,
@@ -44,7 +42,6 @@ class Component(ApplicationSession):
         self.leave()
 
     def get_sensors(self):
-        #return {'range': random.uniform(0, 100)}
         return {'range': self.rover.get_range()}
 
     def onLeave(self, details):
@@ -58,7 +55,7 @@ class Component(ApplicationSession):
 
 if __name__ == '__main__':
     config = ConfigParser()
-    config.read('config.ini');
+    config.read('config.ini')
 
     host = config.get('main', 'host')
     port = config.get('main', 'port')
