@@ -2,5 +2,6 @@
 .ropeproject
 
 .crossbar/node.pid
+.crossbar/node.key
 
 bower_components
