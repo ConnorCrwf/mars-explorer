@@ -98,6 +98,13 @@ input.motor[type=range]::-moz-range-thumb {
   height: 50px;
   width: 100%; }
 
+input.motor.warning[type=range]::-moz-range-track {
+  background-color: rgba(214, 93, 95, 0.5); }
+
+input.motor.warning[type=range]::-moz-range-thumb {
+  background-color: #d65d5f;
+  box-shadow: 0 0 10px #d65d5f; }
+
 label.motor {
   display: none; }
 

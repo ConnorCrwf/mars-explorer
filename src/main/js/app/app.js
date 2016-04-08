@@ -44,9 +44,13 @@
                 var that = this;
                 var previousMotorValues = [0, 0];
                 var controllerOptions = {};
+                var motorLeft = document.querySelector('.motor-left');
+                var motorRight = document.querySelector('.motor-right');
 
                 Leap.loop(function(frame) {
                     var config = that.config;
+                    var leftHandDetected = false;
+                    var rightHandDetected = false;
                     var motorValues = [0, 0];
                     var handValues = [0, 0];
                     var i;
@@ -54,6 +58,12 @@
                     for (i = 0; i < frame.hands.length; i++) {
                         var hand = frame.hands[i];
                         var handIndex = (hand.type === 'left') ? 0 : 1;
+
+                        if (hand.type === 'left') {
+                            leftHandDetected = true;
+                        } else {
+                            rightHandDetected = true;
+                        }
 
                         var value = hand.sphereCenter[2].toFixed(config.precision);
                         handValues[handIndex] = value;
@@ -69,6 +79,19 @@
                         motorValues[handIndex] = value;
                     }
 
+                    // Warn user if hand is not detected
+                    if (!leftHandDetected && !motorLeft.classList.contains('warning')) {
+                        motorLeft.classList.add('warning');
+                    } else if (leftHandDetected && motorLeft.classList.contains('warning')) {
+                        motorLeft.classList.remove('warning');
+                    }
+                    if (!rightHandDetected && !motorRight.classList.contains('warning')) {
+                        motorRight.classList.add('warning');
+                    } else if (rightHandDetected && motorRight.classList.contains('warning')) {
+                        motorRight.classList.remove('warning');
+                    }
+
+
                     if (frame.hands.length === 0) {
                         rovers[0].navigation.left = 0;
                         rovers[0].navigation.right = 0;
@@ -76,7 +99,7 @@
                     }
 
                     if (previousMotorValues[0] !== motorValues[0] || previousMotorValues[1] !== motorValues[1]) {
-                        console.log(handValues + " => " + motorValues);
+                        console.debug(handValues + " => " + motorValues);
                         rovers[0].navigation.left = motorValues[0];
                         rovers[0].navigation.right = motorValues[1];
                     }

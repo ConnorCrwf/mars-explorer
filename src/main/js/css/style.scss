@@ -1,8 +1,9 @@
 $cyber: #34ccff;
 $cyber_transparent: rgba(52, 204, 255, 0.5);
+$red: #d65d5f;
+$red_transparent: rgba(214, 93, 95, 0.5);
 $cyber_padding: 10px;
 $grid_color: rgba(52, 204, 255, 0.1);
-$red: #d65d5f;
 $font: "Roboto Mono", monospace;
 
 .grid {
@@ -134,6 +135,14 @@ input.motor[type=range]::-moz-range-thumb {
     height: 50px;
     width: 100%;
 }
+input.motor.warning[type=range]::-moz-range-track {
+    background-color: $red_transparent;
+}
+input.motor.warning[type=range]::-moz-range-thumb {
+    background-color: $red;
+    box-shadow: 0 0 10px $red;
+}
+
 label.motor {
     display: none;
 }
