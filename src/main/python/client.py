@@ -5,7 +5,10 @@ import logging
 import threading
 import time
 
-import rrb3
+try:
+    import rrb3
+except:
+    import rrb3mock as rrb3
 
 CONFIG_FILE = 'config.ini'
 
@@ -13,17 +16,17 @@ CONFIG_FILE = 'config.ini'
 class Rover(threading.Thread):
 
     def __init__(self, config):
-	threading.Thread.__init__(self)
+        threading.Thread.__init__(self)
 
         self.config = config
-	self.rate = float(self.config.get('rover', 'rate'))
-	battery_voltage = self.config.get('hw', 'battery_voltage')
-	motor_voltage = self.config.get('hw', 'motor_voltage')
-        print 'Initializing rrb3...'
-	self.rr = rrb3.RRB3(battery_voltage, motor_voltage)
+        self.rate = float(self.config.get('rover', 'rate'))
+        battery_voltage = self.config.get('hw', 'battery_voltage')
+        motor_voltage = self.config.get('hw', 'motor_voltage')
+        logging.info('Initializing rrb3...')
+        self.rr = rrb3.RRB3(battery_voltage, motor_voltage)
         self.rr.set_led1(0)
         self.rr.set_led1(1)
-        print 'Initialized rrb3'
+        logging.info('Initialized rrb3')
         self.is_running = True
 
     def shutdown(self):
@@ -45,14 +48,14 @@ class Rover(threading.Thread):
         r = abs(right)
         left_dir = 0 if left < 0 else 1
         right_dir = 0 if right < 0 else 1
-        print('set_motors({}, {}, {}, {})'.format(l, left_dir, r, right_dir))
+        logging.debug('set_motors({}, {}, {}, {})'.format(l, left_dir, r, right_dir))
         self.rr.set_motors(l, left_dir, r, right_dir)
 
 
 def main():
-	config = ConfigParser.ConfigParser()
-	config.read(CONFIG_FILE)
-	Rover().start()
+    config = ConfigParser.ConfigParser()
+    config.read(CONFIG_FILE)
+    Rover(config).start()
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)

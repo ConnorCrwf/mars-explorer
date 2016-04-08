@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import uuid
+import logging
 from ConfigParser import ConfigParser
 
 from twisted.internet import reactor
@@ -17,10 +18,16 @@ class Component(ApplicationSession):
 
     @inlineCallbacks
     def onJoin(self, details):
+        print(details)
+        dir(details)
         self.conf = self.config.extra['config']
         self.id_ = str(self.conf.get('rover', 'id') or uuid.uuid4())
         self.rover = self.config.extra['rover']
         self.rate = float(self.conf.get('rover', 'rate'))
+        # TODO Lookup exact IP address
+        self.host = '192.168.1.2{}'.format(self.id_.zfill(2))
+        self.camera_uri = 'http://{}/html/cam_pic_new.php?pDelay=40000'.format(self.host)
+
         yield self.subscribe(self.on_navigation_update,
                              'mars.rover.' + self.id_ + '.navigation')
         yield self.subscribe(self.on_shutdown_signal,
@@ -42,7 +49,10 @@ class Component(ApplicationSession):
         self.leave()
 
     def get_sensors(self):
-        return {'range': self.rover.get_range()}
+        return {
+            'range': self.rover.get_range(),
+            'camera': self.camera_uri
+        }
 
     def onLeave(self, details):
         self.log.info('Leaving...')
@@ -57,12 +67,14 @@ if __name__ == '__main__':
     config = ConfigParser()
     config.read('config.ini')
 
+    logging.getLogger().setLevel(logging.INFO)
+
     host = config.get('main', 'host')
     port = config.get('main', 'port')
     address = u'ws://{}:{}/ws'.format(host, port)
     realm = u'mars'
 
-    print('Connecting to {} in realm {}...'.format(address, realm))
+    logging.info('Connecting to {} in realm "{}"...'.format(address, realm))
 
     rover = Rover(config)
     rover.start()
@@ -76,6 +88,6 @@ if __name__ == '__main__':
     try:
         runner.run(Component)
     except NoRouteError:
-        print('Error connecting to {} {}'.format(address, realm))
+        logging.error('Error connecting to {} {}'.format(address, realm))
     finally:
         rover.shutdown()

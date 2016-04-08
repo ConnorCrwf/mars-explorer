@@ -5,3 +5,5 @@
 .crossbar/node.key
 
 bower_components
+
+.sass-cache

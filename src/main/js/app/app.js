@@ -1,111 +1,211 @@
 (function () {
-  var app = angular.module('mars', []);
+    var app = angular.module('mars', []);
 
-  app.value('serverConfig', {
-    url: 'ws://127.0.0.1:8080/ws',
-    //url: 'ws://192.168.0.200:8080/ws',
-    realm: 'mars'
-  });
+    app.value('serverConfig', {
+        wamp: {
+            url: 'ws://127.0.0.1:8080/ws',
+            //url: 'ws://192.168.0.200:8080/ws',
+            realm: 'mars',
+        },
+        leap: {
+        	precision: 1,
+        	min: -50,
+        	max: 100,
+        	stopZone: [-20, 30]
+        }
+    });
 
-  app.service('wamp', function (serverConfig) {
-    var connection = new autobahn.Connection(serverConfig);
-    return connection;
-  });
+    app.service('wamp', function (serverConfig) {
+        var connection = new autobahn.Connection(serverConfig.wamp);
+        return connection;
+    });
 
-  app.controller('StationController', function (wamp) {
-    var stationController = this;
-    this.rovers = rovers;
+    app.service('leap', function (serverConfig) {
+        var leap = {
+            config: serverConfig.leap,
+            initialize: function (rovers) {
+                //var leftMotor = document.querySelector('#left-motor-' + rovers[0].id);
+                //var rightMotor = document.querySelector('#right-motor-' + rovers[0].id);
 
-    wamp.onopen = function (session) {
-      console.log('Autobahn connected: ' + session.id);
-      stationController.session = session;
+                console.log('done');
+                /**
+                 * Map a value from one range to another.
+                 *
+                 * @param {number} value value to convert
+                 * @param {number} aMin minimum of the start range
+                 * @param {number} aMax maximum of the start range
+                 * @param {number} bMin minimum of the end range
+                 * @param {number} bMax maximum of the end range
+                 */
+                function map(value,  aMin, aMax, bMin, bMax) {
+                    return bMin + (bMax - bMin) * ((value - aMin) / (aMax - aMin));
+                }
 
-      for (var i = 0; i < stationController.rovers.length; i++) {
-        stationController.rovers[i].initialize(session);
-      }
-    };
+                var that = this;
+                var previousMotorValues = [0, 0];
+                var controllerOptions = {};
 
-    wamp.ondisconnect = function () {
-      console.log('Autobahn disconnected');
-    };
+                Leap.loop(function(frame) {
+                    var config = that.config;
+                    var motorValues = [0, 0];
+                    var handValues = [0, 0];
+                    var i;
+                    // Iterate over hands
+                    for (i = 0; i < frame.hands.length; i++) {
+                        var hand = frame.hands[i];
+                        var handIndex = (hand.type === 'left') ? 0 : 1;
 
-    wamp.open();
+                        var value = hand.sphereCenter[2].toFixed(config.precision);
+                        handValues[handIndex] = value;
 
-    this.getRovers = function () {
-    };
-  });
+                        if (value > config.stopZone[0] && value < config.stopZone[1]) {
+                            value = 0;
+                        } else if (value >= config.stopZone[1]) {
+                            value = map(value, config.stopZone[1], config.max, 0, -1);
+                        } else {
+                            value = map(value, config.min, config.stopZone[0], 1, 0);
+                        }
+                        value = value.toFixed(config.precision);
+                        motorValues[handIndex] = value;
+                    }
 
-  app.directive('rover', function () {
-    return {
-      restrict: 'E',
-      templateUrl: 'rover.html',
-      controller: function ($scope, $element) {
-        var rover = $scope.rover;
+                    if (frame.hands.length === 0) {
+                        rovers[0].navigation.left = 0;
+                        rovers[0].navigation.right = 0;
+                        return;
+                    }
 
-        rover.initialize = function (session) {
-          rover.session = session;
+                    if (previousMotorValues[0] !== motorValues[0] || previousMotorValues[1] !== motorValues[1]) {
+                        console.log(handValues + " => " + motorValues);
+                        rovers[0].navigation.left = motorValues[0];
+                        rovers[0].navigation.right = motorValues[1];
+                    }
 
-          console.log('Initializing rover ' + this.id);
-          session.subscribe('mars.rover.' + this.id + '.heartbeat', function () {
-            rover.heartbeat = Date();
-          });
-          session.subscribe('mars.rover.' + this.id + '.sensors', function (sensors) {
-            rover.sensors = sensors[0];
-          });
+                    previousMotorValues[0] = motorValues[0];
+                    previousMotorValues[1] = motorValues[1];
+                });
+            }
+        };
+        return leap;
+    });
 
-          var motorControls = $element[0].querySelectorAll('.motor');
-          console.dir(motorControls);
-          var leftMotorEl = $element[0].querySelector('.motor-left');
-          var rightMotorEl = $element[0].querySelector('.motor-right');
-          for (var i = 0; i < motorControls.length; i++) {
-            motorControls[i].addEventListener('change', function () {
-              console.log('changing motor');
-              var left = leftMotorEl.value;
-              var right = rightMotorEl.value;
-              rover.navigation.left = left;
-              rover.navigation.right = right;
-              rover.session.publish('mars.rover.' + rover.id + '.navigation', [left, right]);
-            });
-          }
+    app.controller('StationController', function (wamp, leap) {
+        var stationController = this;
+
+        this.getRovers = function () {
+            return rovers;
+        };
+        this.rovers = this.getRovers();
+
+        this.getMarkers = function (markerCount) {
+            var markers = [];
+            for (var i = 1; i < markerCount + 1; i++) {
+                markers.push({ id: i, found: false });
+            }
+            return markers;
+        };
+        this.markers = this.getMarkers(6);
+
+
+        wamp.onopen = function (session) {
+            console.log('Autobahn connected: ' + session.id);
+            stationController.session = session;
+            leap.initialize(stationController.rovers);
+
+            for (var rover of stationController.rovers) {
+                rover.initialize(session);
+                // TODO Fix scope
+                initializeAr(rover.getCameraElement(), stationController.markers);
+            }
         };
 
-        $scope.shutdown = function () {
-          rover.session.publish('mars.rover.' + rover.id + '.shutdown');
+        wamp.ondisconnect = function () {
+            console.log('Autobahn disconnected');
         };
-      },
-      controllerAs: 'roverCtl',
-    };
-  });
 
-  var rovers = [
-    {
-      id: 1,
-      heartbeat: '',
-      sensors: { 
-        range: 0,
-        camera: {
-          uri: 'http://192.168.0.201/html/cam_pic_new.php?pDelay=40000'
+        wamp.open();
+    });
+
+    app.directive('rover', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'rover.html',
+            controller: function ($scope, $element) {
+                var rover = $scope.rover;
+
+                rover.initialize = function (session) {
+                    rover.session = session;
+
+                    console.log('Initializing rover ' + this.id);
+                    session.subscribe('mars.rover.' + this.id + '.heartbeat', function () {
+                        $scope.$apply(function () {
+                            rover.heartbeat = Math.round(new Date().getTime() / 1000);
+                        });
+                    });
+                    session.subscribe('mars.rover.' + this.id + '.sensors', function (sensors) {
+                        $scope.$apply(function () {
+                            rover.sensors = sensors[0];
+                        });
+                    });
+
+                    var motorControls = $element[0].querySelectorAll('.motor');
+                    var leftMotorEl = $element[0].querySelector('.motor-left');
+                    var rightMotorEl = $element[0].querySelector('.motor-right');
+                    var updateMotorControls = function () {
+                        var left = leftMotorEl.value;
+                        var right = rightMotorEl.value;
+                        rover.navigation.left = left;
+                        rover.navigation.right = right;
+                        rover.session.publish('mars.rover.' + rover.id + '.navigation', [left, right]);
+                    };
+                    for (var motorControl of motorControls) {
+                        motorControl.addEventListener('change', updateMotorControls);
+                    }
+                };
+                rover.getCameraElement = function () {
+                    return $element[0].querySelector('.camera-container');
+                };
+
+                $scope.debug = function () {
+                    for (var el of $element[0].querySelectorAll('.camera-layer')) {
+    					el.style.display = (el.style.display === 'none') ? 'inherit' : 'none';
+    				}
+                };
+
+                $scope.shutdown = function () {
+                    rover.session.publish('mars.rover.' + rover.id + '.shutdown');
+                };
+            },
+            controllerAs: 'roverCtl',
+        };
+    });
+
+    app.directive('marker', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'marker.html',
+            controller: function ($scope, $element) {
+                var marker = $scope.marker;
+            },
+            controllerAs: 'markerCtl',
+        };
+    });
+
+    var rovers = [
+        {
+            id: 1,
+            heartbeat: '',
+            sensors: {
+                range: 0,
+                camera: {
+                    uri: 'http://192.168.1.201/html/cam_pic_new.php?pDelay=40000'
+                }
+            },
+            navigation: {
+                left: 0,
+                right: 0
+            }
         }
-      },
-      navigation: {
-        left: 0,
-        right: 0
-      }
-    },
-    {
-      id: 2,
-      heartbeat: '',
-      sensors: { 
-        range: 0,
-        camera: {
-          uri: 'http://192.168.0.202/html/cam_pic_new.php?pDelay=40000'
-        }
-      },
-      navigation: {
-        left: 0,
-        right: 0
-      }
-    }
-  ];
+    ];
 
 })();

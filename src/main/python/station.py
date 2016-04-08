@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import random
+import logging
 from ConfigParser import ConfigParser
 
 from twisted.internet import reactor
@@ -14,6 +15,8 @@ class Component(ApplicationSession):
 
     @inlineCallbacks
     def onJoin(self, details):
+        logging.info('Connected to realm "{}" (sessionid={})'.format(
+            details.realm, details.session))
         self.rover_id = str(self.config.extra['rover_id'])
         yield self.subscribe(self.on_sensor_update,
                              'mars.rover.' + self.rover_id + '.sensors')
@@ -45,7 +48,8 @@ if __name__ == '__main__':
     address = u'ws://{}:{}/ws'.format(host, port)
     realm = u'mars'
 
-    print('Connecting to {} in realm {}...'.format(address, realm))
+    logging.getLogger().setLevel(logging.INFO)
+    logging.info('Connecting to {} in realm "{}"...'.format(address, realm))
 
     # Start application
     runner = ApplicationRunner(address, realm, extra={

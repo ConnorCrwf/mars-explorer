@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html ng-app="mars">
-    <head>
-        <meta charset="utf-8" />
-        <link type="text/css" rel="stylesheet" href="css/style.css">
-        <script src="bower_components/angular/angular.min.js"></script>
-        <script src="bower_components/autobahnjs/autobahn.min.js"></script>
-        <script src="bower_components/leapjs/leap-0.6.4.min.js"></script>
-        <script src="app/app.js"></script>
-    </head>
-    <body>
-        <div ng-controller="StationController as station">
-          <rover ng-repeat="rover in station.rovers"></rover>
+<head>
+    <meta charset="utf-8" />
+    <title>Mars Exploration</title>
+    <link type="text/css" rel="stylesheet" href="css/normalize.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/autobahnjs/autobahn.min.js"></script>
+    <script src="bower_components/leapjs/leap-0.6.4.min.js"></script>
+    <script src="lib/artoolkit.min.js"></script>
+    <script src="lib/artoolkit.api.js"></script>
+    <script src="app/timer.js"></script>
+    <script src="app/ar.js"></script>
+    <script src="app/app.js"></script>
+</head>
+<body>
+    <input type="time" id="time" value="3:00" />
+    <div ng-controller="StationController as station">
+        <rover ng-repeat="rover in station.rovers"></rover>
+        <div class="marker-container">
+            <marker ng-repeat="marker in station.markers"></marker>
         </div>
+        <form id="controls" action='#'></form>
     </body>
 </html>

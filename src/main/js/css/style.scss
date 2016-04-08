@@ -1,0 +1,185 @@
+$cyber: #34ccff;
+$cyber_transparent: rgba(52, 204, 255, 0.5);
+$cyber_padding: 10px;
+$grid_color: rgba(52, 204, 255, 0.1);
+$red: #d65d5f;
+$font: "Roboto Mono", monospace;
+
+.grid {
+  background-image:
+    linear-gradient(0deg,
+      transparent 24%,
+      $grid_color 25%,
+      $grid_color 26%,
+      transparent 27%,
+      transparent 74%,
+      $grid_color 75%,
+      $grid_color 76%,
+      transparent 77%,
+      transparent),
+    linear-gradient(90deg,
+      transparent 24%,
+      $grid_color 25%,
+      $grid_color 26%,
+      transparent 27%,
+      transparent 74%,
+      $grid_color 75%,
+      $grid_color 76%,
+      transparent 77%,
+      transparent);
+  background-size:50px 50px;
+
+}
+
+@mixin text {
+  color: $cyber;
+  text-shadow: 0 0 10px $cyber;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-family: $font;
+}
+
+#time.text-warning {
+    color: $red;
+    text-shadow: 0 0 10px $red;
+}
+
+body {
+  @extend .grid;
+  @include text;
+  background-color: #101010;
+  box-sizing: border-box;
+  padding: 50px;
+  text-align: center;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+  transition: all 1s ease;
+}
+
+p {
+    margin: 0;
+    text-shadow: 0 0 10px #34ccff;
+    font-size: 0.7em;
+    letter-spacing: 0.5em;
+    opacity: 0.5;
+}
+p input {
+    background: transparent;
+    color: #34ccff;
+    border: none;
+    letter-spacing: 0.2em;
+
+    ::focus {
+        border: none;
+    }
+}
+
+button {
+  @include text;
+  background: none;
+  opacity: 0.5;
+  margin: 0 5px;
+  border: 1px solid $cyber;
+  cursor: pointer;
+
+  ::hover {
+      opacity: 1;
+  }
+}
+button:hover {
+  box-shadow: 0 0 5px $cyber;
+}
+
+input[type=time] {
+  @include text;
+  font-size: 5em;
+  font-family: "Roboto Mono", monospace;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+
+.camera-container {
+  position: relative;
+  width: 640 + $cyber_padding * 2;
+  margin: auto;
+  display: inline-block;
+}
+.camera-layer {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: none;
+}
+
+input.motor[type=range] {
+    height: 480px;
+    width: 50px;
+    margin: 10px;
+}
+input.motor[type=range]::-moz-range-track {
+    background-color: $cyber_transparent;
+    opacity: 0.5;
+    width: 100%;
+}
+input.motor[type=range]::-moz-range-thumb {
+    background-color: $cyber;
+    border: none;
+    border-radius: 0;
+    opacity: 1;
+    box-shadow: 0 0 10px $cyber;
+    height: 50px;
+    width: 100%;
+}
+label.motor {
+    display: none;
+}
+
+.marker-container {
+    margin-top: 10px;
+    .marker {
+        display: inline-block;
+    }
+    label {
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        background-color: transparent;
+        border: 1px dotted;
+        opacity: 0.5;
+    }
+
+    input[type=checkbox] {
+        display: none;
+    }
+    input[type=checkbox]:checked + label {
+        background-color: #34ccff;
+    }
+}
+
+.container {
+  border: 1px solid;
+  padding: 20px;
+  box-shadow: 0 0 10px, 0 0 10px inset;
+}
+
+.cyber-container {
+  padding: $cyber_padding;
+  background-image:
+    linear-gradient($cyber 5%, transparent 5%, transparent 95%, $cyber 95%),
+    linear-gradient(90deg, $cyber 5%, transparent 5%, transparent 95%, $cyber 95%),
+    linear-gradient($cyber 5%, transparent 5%, transparent 95%, $cyber 95%),
+    linear-gradient(90deg, $cyber 5%, transparent 5%, transparent 95%, $cyber 95%),
+    linear-gradient(transparent 10%, $cyber 10%, $cyber 90%, transparent 90%),
+    linear-gradient(transparent 10%, $cyber 10%, $cyber 90%, transparent 90%);
+  background-size:
+    3px 100%, 100% 3px, 3px 100%, 100% 3px,
+    1px 100%, 1px 100%;
+  background-position:
+    0 0, 0 0, 100% 100%, 100% 100%,
+    0 0, 100% 0;
+  background-repeat: no-repeat;
+}
