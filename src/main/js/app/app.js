@@ -93,6 +93,24 @@
         var stationController = this;
 
         this.getRovers = function () {
+            // TODO Remove after testing
+            var id = document.querySelector('#rover-id').value;
+            var rovers = [
+                {
+                    id: id,
+                    heartbeat: '',
+                    sensors: {
+                        range: 0,
+                        camera: {
+                            uri: 'http://192.168.1.201/html/cam_pic_new.php?pDelay=40000'
+                        }
+                    },
+                    navigation: {
+                        left: 0,
+                        right: 0
+                    }
+                }
+            ];
             return rovers;
         };
         this.rovers = this.getRovers();
@@ -190,22 +208,5 @@
             controllerAs: 'markerCtl',
         };
     });
-
-    var rovers = [
-        {
-            id: 1,
-            heartbeat: '',
-            sensors: {
-                range: 0,
-                camera: {
-                    uri: 'http://192.168.1.201/html/cam_pic_new.php?pDelay=40000'
-                }
-            },
-            navigation: {
-                left: 0,
-                right: 0
-            }
-        }
-    ];
 
 })();
