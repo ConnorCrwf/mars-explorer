@@ -1,19 +1,6 @@
 (function () {
     var module = angular.module('mars.leap', []);
 
-    /**
-     * Map a value from one range to another.
-     *
-     * @param {number} value value to convert
-     * @param {number} aMin minimum of the start range
-     * @param {number} aMax maximum of the start range
-     * @param {number} bMin minimum of the end range
-     * @param {number} bMax maximum of the end range
-     */
-    function map(value,  aMin, aMax, bMin, bMax) {
-        return bMin + (bMax - bMin) * ((value - aMin) / (aMax - aMin));
-    }
-
     module.provider('leap', function () {
         var _config;
         var previousMotorValues = [0, 0];

@@ -59,7 +59,7 @@
                 var frameTime = time - lastTime;
                 // Call draw functions
                 for (var func of drawFunctions) {
-                    func();
+                    func(frameTime);
                 }
                 // Request the next frame
                 lastTime = time;
@@ -169,36 +169,46 @@
         var quadVerts = marker.vertex;
         var center = marker.pos;
         var padding = 1.5;
+        var slices = 9;
+        var maxTimeMs = 2 * 1e3;
+        var easing = 0.5;
+
+        var associatedMarker = rover.markers[marker.id];
+        if (!associatedMarker) { return; }
 
         ctx.save();
         ctx.translate(center[0] * (1 - padding), center[1] * (1 - padding));
         ctx.scale(padding, padding);
-
-        // ctx.shadowColor = 'rgba(52, 204, 255, 1)';
-        // ctx.shadowBlur = 10;
-        // ctx.lineWidth = 2;
-        // ctx.strokeStyle = 'rgba(52, 204, 255, 1)';
-        // ctx.fillStyle = 'rgba(52, 204, 255, 0.5)';
-        // ctx.beginPath();
-        // ctx.moveTo(quadVerts[0][0], quadVerts[0][1]);
-        // ctx.lineTo(quadVerts[1][0], quadVerts[1][1]);
-        // ctx.lineTo(quadVerts[2][0], quadVerts[2][1]);
-        // ctx.lineTo(quadVerts[3][0], quadVerts[3][1]);
-        // ctx.lineTo(quadVerts[0][0], quadVerts[0][1]);
-        // ctx.fill();
-        // ctx.stroke();
-        //ctx.restore();
-
-        var slices = 9;
         drawPixelatedGrid(ctx, quadVerts, slices);
-        //ctx.translate(-quadVerts[0][0], -quadVerts[0][1]);
         ctx.restore();
 
-        // Update found markers
-        associatedMarker = rover.markers[marker.id];
-        if (associatedMarker) {
-            rover.markers[marker.id].found = true;
+        if (associatedMarker.time <= maxTimeMs) {
+            ctx.save();
+            var amt = map(associatedMarker.time, 0, maxTimeMs / 2, 0, padding);
+            amt = Math.min(padding, amt);
+            ctx.translate(center[0] * (1 - amt), center[1] * (1 - amt));
+            ctx.scale(amt, amt);
+            ctx.shadowColor = 'rgba(52, 204, 255, 1)';
+            ctx.shadowBlur = 10;
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(52, 204, 255, 1)';
+            ctx.fillStyle = 'rgba(52, 204, 255, 0.5)';
+            ctx.beginPath();
+            ctx.moveTo(quadVerts[0][0], quadVerts[0][1]);
+            ctx.lineTo(quadVerts[1][0], quadVerts[1][1]);
+            ctx.lineTo(quadVerts[2][0], quadVerts[2][1]);
+            ctx.lineTo(quadVerts[3][0], quadVerts[3][1]);
+            ctx.lineTo(quadVerts[0][0], quadVerts[0][1]);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
         }
+
+        // Update found marker
+        if (associatedMarker.time >= maxTimeMs) {
+            associatedMarker.found = true;
+        }
+        associatedMarker.time += frameTime;
     }
 
     function lerp(v0, v1, t) {
