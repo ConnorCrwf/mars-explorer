@@ -10,6 +10,9 @@
     <label for="right-motor-{{ rover.id }}" class="motor">{{ rover.navigation.right }}</label>
     <p class="heartbeat">Last Heartbeat: <input ng-model="rover.heartbeat"></input></p>
     <p class="sensors-range">Range: <input ng-model="rover.sensors.range"></input></p>
+    <div class="marker-container">
+        <marker ng-repeat="marker in rover.markers track by marker.id"></marker>
+    </div>
     <br />
     <button ng-click="shutdown()">Shutdown</button>
     <button ng-click="debug()">Debug</button>

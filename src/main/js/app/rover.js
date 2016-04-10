@@ -9,20 +9,10 @@
             controller: function ($scope, $element) {
                 var rover = $scope.rover;
 
-                rover.initialize = function (session) {
-                    rover.session = session;
-
+                rover.initialize = function () {
                     console.log('Initializing rover ' + this.id);
-                    session.subscribe('mars.rover.' + this.id + '.heartbeat', function () {
-                        $scope.$apply(function () {
-                            rover.heartbeat = Math.round(new Date().getTime() / 1000);
-                        });
-                    });
-                    session.subscribe('mars.rover.' + this.id + '.sensors', function (sensors) {
-                        $scope.$apply(function () {
-                            rover.sensors = sensors[0];
-                        });
-                    });
+
+                    rover.createMarkers(8);
 
                     var motorControls = $element[0].querySelectorAll('.motor');
                     leftMotorEl = $element[0].querySelector('.motor-left');
@@ -36,6 +26,27 @@
                     };
                     for (var motorControl of motorControls) {
                         motorControl.addEventListener('change', updateMotorControls);
+                    }
+                };
+
+                rover.wampSubscribe = function (session) {
+                    this.session = session;
+                    session.subscribe('mars.rover.' + this.id + '.heartbeat', function () {
+                        $scope.$apply(function () {
+                            rover.heartbeat = Math.round(new Date().getTime() / 1000);
+                        });
+                    });
+                    session.subscribe('mars.rover.' + this.id + '.sensors', function (sensors) {
+                        $scope.$apply(function () {
+                            rover.sensors = sensors[0];
+                        });
+                    });
+                };
+
+                rover.createMarkers = function (count) {
+                    this.markers = [];
+                    for (var i = 0; i < count; i++) {
+                        this.markers.push({ id: i, found: false, time: 0 });
                     }
                 };
 
@@ -57,6 +68,7 @@
                 };
 
                 $scope.shutdown = function () {
+                    if (!this.session) { return; }
                     rover.session.publish('mars.rover.' + rover.id + '.shutdown');
                 };
             },

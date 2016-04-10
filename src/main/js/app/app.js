@@ -1,5 +1,5 @@
 (function () {
-    var app = angular.module('mars', ['mars.rover', 'mars.leap', 'mars.util']);
+    var app = angular.module('mars', ['mars.rover', 'mars.ar', 'mars.leap', 'mars.util']);
 
     app.config(function (leapProvider, wampProvider, timerProvider) {
         leapProvider.config({
@@ -16,7 +16,7 @@
         timerProvider.setElement(document.querySelector('#time'));
     });
 
-    app.controller('StationController', function (timer, wamp, leap) {
+    app.controller('StationController', function (ar, leap, wamp, timer) {
         var stationController = this;
 
         this.getRover = function () {
@@ -39,29 +39,21 @@
             };
             return rover;
         };
-        this.getMarkers = function (markerCount) {
-            var markers = [];
-            for (var i = 1; i < markerCount + 1; i++) {
-                markers.push({ id: i, found: false });
-            }
-            return markers;
-        };
 
         wamp.onopen = function (session) {
             console.log('Autobahn connected: ' + session.id);
-            stationController.session = session;
 
-            stationController.rover.initialize(session);
-            // TODO Fix scope
-            leap.start(stationController.rover);
-            initializeAr(stationController.rover.getCameraElement(), stationController.markers);
+            var rover = stationController.rover;
+            rover.initialize();
+            rover.wampSubscribe(session);
+            leap.start(rover);
+            ar.start(rover);
         };
         wamp.ondisconnect = function () {
             console.log('Autobahn disconnected');
         };
 
         this.rover = this.getRover();
-        this.markers = this.getMarkers(6);
 
         timer.start();
         wamp.open();
