@@ -5,21 +5,23 @@
     <title>Mars Exploration</title>
     <link type="text/css" rel="stylesheet" href="bower_components/normalize-css/normalize.css">
     <link type="text/css" rel="stylesheet" href="css/style.css">
-    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/autobahnjs/autobahn.min.js"></script>
     <script src="bower_components/leapjs/leap-0.6.4.min.js"></script>
     <script src="bower_components/jsartoolkit5/build/artoolkit.min.js"></script>
     <script src="bower_components/jsartoolkit5/js/artoolkit.api.js"></script>
-    <script src="app/timer.js"></script>
+    <script src="app/rover.js"></script>
+    <script src="app/leap.js"></script>
+    <script src="app/util.js"></script>
     <script src="app/ar.js"></script>
     <script src="app/app.js"></script>
 </head>
 <body>
     <input type="time" id="time" value="3:00" />
     <div ng-controller="StationController as station">
-        <rover ng-repeat="rover in station.rovers"></rover>
+        <rover ng-repeat="rover in [station.rover] track by rover.id"></rover>
         <div class="marker-container">
-            <marker ng-repeat="marker in station.markers"></marker>
+            <marker ng-repeat="marker in station.markers track by marker.id"></marker>
         </div>
         ID:<input id="rover-id" value="1" style="width: 50px; text-align: center; margin-top: 10px;">
     </body>

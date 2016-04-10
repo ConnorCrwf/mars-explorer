@@ -26,7 +26,6 @@ function loadAr(ctx) {
 function initializeAr(cameraContainerElement, markers) {
     // TODO Cleanup reference
     foundMarkers = markers;
-    console.log(markers);
 
     // Initialize canvas context
     var canvas = cameraContainerElement.querySelector('.camera-rgb');
@@ -36,9 +35,6 @@ function initializeAr(cameraContainerElement, markers) {
     // Initialize AR
     cameraParam.onload = function () { loadAr(ctx); };
     cameraParam.load('data/camera_para.dat');
-
-    // Initialize timer
-    timer(document.querySelector('#time'));
 
     // Create draw functions
     var drawFunctions = [];
@@ -64,6 +60,8 @@ function initializeAr(cameraContainerElement, markers) {
         lastTime = time;
         window.requestAnimationFrame(draw);
     }
+
+    console.log('Starting animation loop');
     window.requestAnimationFrame(draw);
 }
 
