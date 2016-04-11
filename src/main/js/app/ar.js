@@ -45,6 +45,10 @@
             var drawFunctions = [];
             //drawFunctions.push(useRover(ctx));
             drawFunctions.push(useWebcam(ctx));
+            // TODO Add after image processing and before UI
+            drawFunctions.push(function () {
+                drawScanLines(ctx);
+            });
             drawFunctions.push(function (frameTime) {
                 if (!arController) { return; }
                 arController.time = frameTime;
@@ -246,6 +250,19 @@
                 ctx.lineTo(p4[0], p4[1]);
                 ctx.fill();
             }
+        }
+    }
+
+    function drawScanLines(ctx) {
+        var width = ctx.canvas.width;
+        var height = ctx.canvas.height;
+        var size = 4;
+        var opactity = 0.05;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + opactity + ')';
+        for (var i = 0; i < height / size; i++) {
+            if (i % 2 === 0) { continue; }
+            ctx.fillRect(0, i * size, width, size);
         }
     }
 }());
