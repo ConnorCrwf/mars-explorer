@@ -26,10 +26,11 @@
             } else {
                 timerEl.classList.remove('text-warning');
             }
-            var hours = Math.floor(time/60);
-            var minutes = time % 60;
+            var minutes = Math.floor(time/60);
+            var seconds = time % 60;
             minutes = (("" + minutes).length > 1) ? minutes : "0" + minutes;
-            timerEl.value = hours + ":" + minutes;
+            seconds = (("" + seconds).length > 1) ? seconds : "0" + seconds;
+            timerEl.value = minutes + ":" + seconds;
         };
 
         this.setElement = function (el) {
