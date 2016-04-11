@@ -8,9 +8,12 @@
     </div>
     <input ng-model="rover.navigation.right" id="right-motor-{{ rover.id }}" class="motor motor-right" orient="vertical" type="range" value="0" min="-1" max="1" step="0.1" />
     <label for="right-motor-{{ rover.id }}" class="motor">{{ rover.navigation.right }}</label>
-    <p class="heartbeat">Last Heartbeat: <input ng-model="rover.heartbeat"></input></p>
-    <p class="sensors-range">Range: <input ng-model="rover.sensors.range"></input></p>
+    <br />
+    <small class="heartbeat">ID: <input ng-model="rover.id"></input></small>
+    <small class="heartbeat">Heartbeat: <input ng-model="rover.heartbeat"></input></small>
+    <small class="sensors-range">Range: <input ng-model="rover.sensors.range"></input></small>
     <div class="marker-container">
+        <p>Mission Objectives</p>
         <marker ng-repeat="marker in rover.markers track by marker.id"></marker>
     </div>
     <br />

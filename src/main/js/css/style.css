@@ -1,10 +1,6 @@
 .grid, body {
-  background-image: linear-gradient(0deg, transparent 24%, rgba(52, 204, 255, 0.1) 25%, rgba(52, 204, 255, 0.1) 26%, transparent 27%, transparent 74%, rgba(52, 204, 255, 0.1) 75%, rgba(52, 204, 255, 0.1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(52, 204, 255, 0.1) 25%, rgba(52, 204, 255, 0.1) 26%, transparent 27%, transparent 74%, rgba(52, 204, 255, 0.1) 75%, rgba(52, 204, 255, 0.1) 76%, transparent 77%, transparent);
-  background-size: 50px 50px; }
-
-#time.text-warning {
-  color: #d65d5f;
-  text-shadow: 0 0 10px #d65d5f; }
+  background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+  background-image: linear-gradient(to right, rgba(52, 204, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(52, 204, 255, 0.05) 1px, transparent 1px), linear-gradient(to right, rgba(52, 204, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(52, 204, 255, 0.05) 1px, transparent 1px); }
 
 body {
   color: #34ccff;
@@ -15,25 +11,33 @@ body {
   background-color: #101010;
   box-sizing: border-box;
   padding: 50px;
-  text-align: center; }
+  text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center; }
 
 *, *:before, *:after {
   box-sizing: inherit;
   transition: all 1s ease; }
 
-p {
+p, small {
   margin: 0;
   text-shadow: 0 0 10px #34ccff;
   font-size: 0.7em;
   letter-spacing: 0.5em;
   opacity: 0.5; }
 
+small {
+  font-size: 0.5em; }
+  small input {
+    width: 12em; }
+
 input {
   background: transparent;
   color: #34ccff;
   border: none;
   letter-spacing: 0.2em; }
-  input ::focus {
+  input:focus {
     border: none; }
 
 button {
@@ -47,11 +51,25 @@ button {
   margin: 0 5px;
   border: 1px solid #34ccff;
   cursor: pointer; }
-  button ::hover {
-    opacity: 1; }
+  button:hover {
+    opacity: 1;
+    box-shadow: 0 0 5px #34ccff; }
 
-button:hover {
-  box-shadow: 0 0 5px #34ccff; }
+body > div.main-container {
+  flex: 2 0 0;
+  order: 1; }
+
+body > aside {
+  flex: 1 1 0;
+  overflow-x: hidden; }
+  body > aside.left-container {
+    order: 0; }
+  body > aside.right-container {
+    order: 2; }
+
+#time.text-warning {
+  color: #d65d5f;
+  text-shadow: 0 0 10px #d65d5f; }
 
 input[type=time] {
   color: #34ccff;
@@ -64,7 +82,8 @@ input[type=time] {
   border: none;
   text-align: center;
   display: block;
-  margin: 0 auto; }
+  margin: 0 auto;
+  width: 100%; }
 
 .camera-container {
   position: relative;
@@ -82,35 +101,33 @@ input.motor[type=range] {
   height: 480px;
   width: 50px;
   margin: 10px; }
-
-input.motor[type=range]::-moz-range-track {
-  background-color: rgba(52, 204, 255, 0.5);
-  opacity: 0.5;
-  width: 100%; }
-
-input.motor[type=range]::-moz-range-thumb {
-  background-color: #34ccff;
-  border: none;
-  border-radius: 0;
-  opacity: 1;
-  box-shadow: 0 0 10px #34ccff;
-  height: 50px;
-  width: 100%; }
-
-input.motor.warning[type=range]::-moz-range-track {
-  background-color: rgba(214, 93, 95, 0.5); }
-
-input.motor.warning[type=range]::-moz-range-thumb {
-  background-color: #d65d5f;
-  box-shadow: 0 0 10px #d65d5f; }
+  input.motor[type=range]::-moz-range-track {
+    background-color: rgba(52, 204, 255, 0.5);
+    opacity: 0.5;
+    width: 100%; }
+  input.motor[type=range]::-moz-range-thumb {
+    background-color: #34ccff;
+    border: none;
+    border-radius: 0;
+    opacity: 1;
+    box-shadow: 0 0 10px #34ccff;
+    height: 50px;
+    width: 100%; }
+  input.motor[type=range].warning::-moz-range-track {
+    background-color: rgba(214, 93, 95, 0.5); }
+  input.motor[type=range].warning::-moz-range-thumb {
+    background-color: #d65d5f;
+    box-shadow: 0 0 10px #d65d5f; }
 
 label.motor {
   display: none; }
 
 .marker-container {
-  margin-top: 10px; }
+  margin: 30px auto 0;
+  width: 50%; }
   .marker-container .marker {
-    display: inline-block; }
+    display: inline-block;
+    margin: 3px 0; }
   .marker-container label {
     width: 100px;
     height: 100px;
@@ -120,13 +137,51 @@ label.motor {
     opacity: 0.5; }
   .marker-container input[type=checkbox] {
     display: none; }
-  .marker-container input[type=checkbox]:checked + label {
-    background-color: #34ccff; }
+    .marker-container input[type=checkbox]:checked + label {
+      background-color: #34ccff; }
+
+.satellite-feed p {
+  margin-bottom: 5px; }
+.satellite-feed img {
+  filter: grayscale(1); }
+.satellite-feed span {
+  position: relative;
+  display: inline-block; }
+  .satellite-feed span::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    content: '';
+    background-size: 10px 10px, 10px 10px, 50px 50px, 50px 50px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 1px, transparent 1px), linear-gradient(to right, rgba(255, 255, 255, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    height: 98%; }
+.satellite-feed hr {
+  background-size: 10px 10px;
+  border: 0px;
+  margin: 0;
+  display: inline-block; }
+  .satellite-feed hr.vertical {
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    height: 240px;
+    width: 5px; }
+    .satellite-feed hr.vertical:nth-of-type(even) {
+      border-left: 1px solid; }
+    .satellite-feed hr.vertical:nth-of-type(odd) {
+      border-right: 1px solid; }
+  .satellite-feed hr.horizontal {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    height: 5px;
+    width: 320px;
+    display: block;
+    margin: 0 auto;
+    border-top: 1px solid; }
 
 .container {
-  border: 1px solid;
   padding: 20px;
-  box-shadow: 0 0 10px, 0 0 10px inset; }
+  border: 1px solid rgba(52, 204, 255, 0.5);
+  box-shadow: 0 0 5px rgba(52, 204, 255, 0.5), 0 0 5px rgba(52, 204, 255, 0.5) inset; }
 
 .cyber-container {
   padding: 10px;
