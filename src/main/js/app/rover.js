@@ -67,9 +67,21 @@
     				}
                 };
 
+                $scope.stop = function () {
+                    if (!rover.session) { return; }
+                    rover.session.publish('mars.rover.' + rover.id + '.signal', ['stop']);
+                };
                 $scope.shutdown = function () {
-                    if (!this.session) { return; }
-                    rover.session.publish('mars.rover.' + rover.id + '.shutdown');
+                    if (!rover.session) { return; }
+                    rover.session.publish('mars.rover.' + rover.id + '.signal', ['shutdown']);
+                };
+                $scope.reboot = function () {
+                    if (!rover.session) { return; }
+                    rover.session.publish('mars.rover.' + rover.id + '.signal', ['reboot']);
+                };
+                $scope.update = function () {
+                    if (!rover.session) { return; }
+                    rover.session.publish('mars.rover.' + rover.id + '.signal', ['update']);
                 };
             },
             controllerAs: 'roverCtl',

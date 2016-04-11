@@ -28,25 +28,30 @@ class Component(ApplicationSession):
         self.host = '192.168.1.2{}'.format(self.id_.zfill(2))
         self.camera_uri = 'http://{}/html/cam_pic_new.php?pDelay=40000'.format(self.host)
 
-        yield self.subscribe(self.on_navigation_update,
-                             'mars.rover.' + self.id_ + '.navigation')
-        yield self.subscribe(self.on_shutdown_signal,
-                             'mars.rover.' + self.id_ + '.shutdown')
+        yield self.subscribe(self.on_navigation_update, 'mars.rover.' + self.id_ + '.navigation')
+        yield self.subscribe(self.on_signal, 'mars.rover.' + self.id_ + '.signal')
 
         while True:
             self.publish('mars.rover.' + self.id_ + '.heartbeat')
-            self.publish('mars.rover.' + self.id_ + '.sensors',
-                         self.get_sensors())
+            self.publish('mars.rover.' + self.id_ + '.sensors', self.get_sensors())
             yield sleep(self.rate)
 
     def on_navigation_update(self, left_motor, right_motor):
         self.log.info('{}, {}'.format(left_motor, right_motor))
         self.rover.set_motors(float(left_motor), float(right_motor))
 
-    def on_shutdown_signal(self):
-        self.log.info('Shutting down system')
-        self.rover.shutdown()
+    def on_reboot_signal(self):
+        self.log.info('Rebooting system')
+        self.rover.reboot()
         self.leave()
+
+    def on_signal(self, signal):
+        signal = signal.lower()
+        self.log.info('Recieved signal {}'.format(signal))
+        if signal in ['stop', 'shutdown', 'reboot', 'update']:
+            result = getattr(self.rover, signal)()
+            if not self.rover.is_running:
+                self.leave()
 
     def get_sensors(self):
         return {
@@ -90,4 +95,4 @@ if __name__ == '__main__':
     except NoRouteError:
         logging.error('Error connecting to {} {}'.format(address, realm))
     finally:
-        rover.shutdown()
+        rover.stop()

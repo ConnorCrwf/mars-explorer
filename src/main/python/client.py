@@ -3,7 +3,9 @@
 import ConfigParser
 import logging
 import threading
+import subprocess
 import time
+import os
 
 try:
     import rrb3
@@ -29,10 +31,21 @@ class Rover(threading.Thread):
         logging.info('Initialized rrb3')
         self.is_running = True
 
-    def shutdown(self):
+    def stop(self):
         self.rr.stop()
         self.rr.cleanup()
         self.is_running = False
+
+    def shutdown(self):
+        self.stop()
+        self._run_shell_cmd('/sbin/shutdown -h now')
+
+    def reboot(self):
+        self.stop()
+        self._run_shell_cmd('/sbin/reboot')
+
+    def update(self):
+        self._run_shell_cmd('git pull')
 
     def run(self):
         while (self.is_running):
@@ -51,6 +64,11 @@ class Rover(threading.Thread):
         logging.debug('set_motors({}, {}, {}, {})'.format(l, left_dir, r, right_dir))
         self.rr.set_motors(l, left_dir, r, right_dir)
 
+    def _run_shell_cmd(self, command):
+        logging.info('Running shell command: {}'.format(command))
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output = process.communicate()[0]
+        logging.info(output)
 
 def main():
     config = ConfigParser.ConfigParser()

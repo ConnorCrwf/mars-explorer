@@ -17,6 +17,9 @@
         <marker ng-repeat="marker in rover.markers track by marker.id"></marker>
     </div>
     <br />
+    <button ng-click="stop()">Stop</button>
     <button ng-click="shutdown()">Shutdown</button>
+    <button ng-click="reboot()">Reboot</button>
+    <button ng-click="update()">Update</button>
     <button ng-click="debug()">Debug</button>
 </div>

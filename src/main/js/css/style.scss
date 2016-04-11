@@ -70,9 +70,15 @@ button {
     @include text;
     background: none;
     opacity: 0.5;
-    margin: 0 5px;
     border: 1px solid $cyber;
     cursor: pointer;
+    min-width: 100px;
+    font-size: 0.5em;
+    padding: 5px 0;
+
+    &::after {
+        content: '()';
+    }
 
     &:hover {
         opacity: 1;
@@ -161,6 +167,7 @@ label.motor {
 
     .marker {
         display: inline-block;
+        line-height: 5em;
         margin: 3px 0;
     }
     label {
