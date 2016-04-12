@@ -53,7 +53,7 @@ class Rover(threading.Thread):
 
     def get_range(self):
         distance = self.rr.get_distance()
-        logging.info('Range: {}'.format(distance))
+        logging.debug('Range: {}'.format(distance))
         return distance
 
     def set_motors(self, left, right):
