@@ -183,6 +183,26 @@ label.motor {
     margin: 0 auto;
     border-top: 1px solid; }
 
+.c3 line, .c3 path {
+  stroke: inherit; }
+
+.c3-gauge-value {
+  fill: #34ccff; }
+
+.c3-chart-arcs .c3-chart-arcs-background {
+  fill: rgba(52, 204, 255, 0.5); }
+.c3-chart-arcs .c3-gauge-value, .c3-chart-arcs .c3-chart-arcs-title, .c3-chart-arcs .c3-chart-arcs-gauge-min, .c3-chart-arcs .c3-chart-arcs-gauge-max {
+  font-family: "Share Tech Mono", "Roboto Mono", monospace;
+  fill: rgba(52, 204, 255, 0.5); }
+
+.c3-axis, .c3-xgrids, .c3-ygrids {
+  font-family: "Share Tech Mono", "Roboto Mono", monospace;
+  stroke: rgba(52, 204, 255, 0.5); }
+
+.gauge-chart {
+  width: 50%;
+  display: inline; }
+
 .container {
   padding: 20px;
   border: 1px solid rgba(52, 204, 255, 0.5);

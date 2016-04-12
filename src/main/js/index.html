@@ -4,12 +4,15 @@
     <meta charset="utf-8" />
     <title>Mars Exploration</title>
     <link type="text/css" rel="stylesheet" href="bower_components/normalize-css/normalize.css">
+    <link type="text/css" rel="stylesheet" href="bower_components/c3/c3.css">
     <link type="text/css" rel="stylesheet" href="css/style.css">
-    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/autobahnjs/autobahn.min.js"></script>
     <script src="bower_components/leapjs/leap-0.6.4.min.js"></script>
     <script src="bower_components/jsartoolkit5/build/artoolkit.min.js"></script>
     <script src="bower_components/jsartoolkit5/js/artoolkit.api.js"></script>
+    <script src="bower_components/d3/d3.min.js"></script>
+    <script src="bower_components/c3/c3.min.js"></script>
     <script src="app/rover.js"></script>
     <script src="app/leap.js"></script>
     <script src="app/util.js"></script>
@@ -32,9 +35,16 @@
     </aside>
     <aside class="right-container">
         <small class="heartbeat">ID: <input id="rover-id" value="1"></input></small>
-        <img src="" height="100px" width="320px" class="container"/>
-        <img src="" height="500px" width="320px" class="container"/>
-        <img src="" height="100px" width="320px" class="container"/>
+        <div class="charts">
+            <div id="chart-1"></div>
+            <div class="gauge-chart"></div>
+            <div class="gauge-chart"></div>
+            <div class="gauge-chart"></div>
+            <div class="gauge-chart"></div>
+            <div class="gauge-chart"></div>
+            <div class="gauge-chart"></div>
+        </div>
+        <script src="app/chart.js"></script>
     <aside>
 </body>
 </html>

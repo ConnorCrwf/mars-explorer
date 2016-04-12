@@ -21,6 +21,7 @@
     "autobahnjs": "autobahn#^0.9.9",
     "leapjs": "^0.6.4",
     "normalize-css": "^4.0.0",
-    "jsartoolkit5": "artoolkit/jsartoolkit5"
+    "jsartoolkit5": "artoolkit/jsartoolkit5",
+    "c3": "^0.4.10"
   }
 }

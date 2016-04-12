@@ -241,6 +241,33 @@ label.motor {
     }
 }
 
+.c3 {
+    line, path {
+        stroke: inherit;
+    }
+}
+.c3-gauge-value {
+    fill: $cyber;
+}
+.c3-chart-arcs {
+    .c3-chart-arcs-background {
+        fill: $cyber_transparent;
+    }
+    .c3-gauge-value, .c3-chart-arcs-title, .c3-chart-arcs-gauge-min, .c3-chart-arcs-gauge-max,  {
+        font-family: $font;
+        fill: $cyber_transparent;
+    }
+}
+.c3-axis, .c3-xgrids, .c3-ygrids {
+    font-family: $font;
+    stroke: $cyber_transparent;
+}
+
+.gauge-chart {
+    width: 50%;
+    display: inline;
+}
+
 .container {
     padding: 20px;
     border: 1px solid $cyber_transparent;
