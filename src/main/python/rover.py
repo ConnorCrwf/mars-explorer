@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import uuid
 import logging
 from ConfigParser import ConfigParser
@@ -12,6 +13,8 @@ from autobahn.twisted.util import sleep
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 
 from client import Rover
+
+logger = logging.getLogger(__name__)
 
 
 class Component(ApplicationSession):
@@ -37,7 +40,7 @@ class Component(ApplicationSession):
             yield sleep(self.rate)
 
     def on_navigation_update(self, left_motor, right_motor):
-        self.log.info('{}, {}'.format(left_motor, right_motor))
+        self.log.debug('{}, {}'.format(left_motor, right_motor))
         self.rover.set_motors(float(left_motor), float(right_motor))
 
     def on_reboot_signal(self):
@@ -67,23 +70,24 @@ class Component(ApplicationSession):
         reactor.stop()
         self.log.info('Disconnected')
 
-
-if __name__ == '__main__':
+def main():
     config = ConfigParser()
-    config.read('config.ini')
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+    config.read(config_file)
 
-    logging.getLogger().setLevel(logging.INFO)
+    logger.setLevel(getattr(logging, config.get('logging', 'level')))
+    logging.basicConfig(format='[%(levelname)-5s] %(asctime)-15s %(name)10s %(message)s')
 
     host = config.get('main', 'host')
     port = config.get('main', 'port')
     address = u'ws://{}:{}/ws'.format(host, port)
     realm = u'mars'
 
-    logging.info('Connecting to {} in realm "{}"...'.format(address, realm))
-
+    logger.info('Initializing rover interface...')
     rover = Rover(config)
     rover.start()
 
+    logger.info('Connecting to {} in realm "{}"...'.format(address, realm))
     runner = ApplicationRunner(address, realm, extra={
         'config': config,
         'rover': rover
@@ -93,6 +97,9 @@ if __name__ == '__main__':
     try:
         runner.run(Component)
     except NoRouteError:
-        logging.error('Error connecting to {} {}'.format(address, realm))
+        logger.error('Error connecting to {} {}'.format(address, realm))
     finally:
         rover.stop()
+
+if __name__ == '__main__':
+    main()
