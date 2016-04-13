@@ -1,6 +1,7 @@
 (function () {
 
     var updateIntervalMs = 1000;
+    var animate = false;
 
     (function createLineChart() {
         var randomData = Array(20);
@@ -40,6 +41,7 @@
             transition: { duration: 200 }
         });
 
+        if (!animate) { return; }
         window.setInterval(function () {
             var header = randomData.shift();
             randomData.shift();
@@ -86,6 +88,8 @@
             });
             gaugeCharts.push(chart);
         }
+
+        if (!animate) { return; }
         window.setInterval(function () {
             for (var chart of gaugeCharts) {
                 var value = Math.random();
