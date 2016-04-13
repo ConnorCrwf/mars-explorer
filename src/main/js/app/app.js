@@ -9,8 +9,8 @@
         	stopZone: [-20, 30]
         });
         wampProvider.config({
-            url: 'ws://127.0.0.1:8080/ws',
-            //url: 'ws://192.168.1.200:8080/ws',
+            //url: 'ws://127.0.0.1:8080/ws',
+            url: 'ws://192.168.1.200:8080/ws',
             realm: 'mars',
         });
         timerProvider.setElement(document.querySelector('#time'));

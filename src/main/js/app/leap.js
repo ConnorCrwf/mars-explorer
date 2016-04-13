@@ -58,10 +58,13 @@
                     motorRight.classList.remove('warning');
                 }
 
+                var changeEvent = new Event('change');
 
                 if (frame.hands.length === 0) {
                     rover.navigation.left = 0;
                     rover.navigation.right = 0;
+                    rover.update();
+                    motorLeft.dispatchEvent(changeEvent);
                     return;
                 }
 
@@ -69,6 +72,8 @@
                     console.debug(handValues + " => " + motorValues);
                     rover.navigation.left = motorValues[0];
                     rover.navigation.right = motorValues[1];
+                    rover.update();
+                    motorLeft.dispatchEvent(changeEvent);
                 }
 
                 previousMotorValues[0] = motorValues[0];

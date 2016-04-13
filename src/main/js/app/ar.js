@@ -43,8 +43,8 @@
 
             // Create draw functions
             var drawFunctions = [];
-            //drawFunctions.push(useRover(ctx));
-            drawFunctions.push(useWebcam(ctx));
+            drawFunctions.push(useRover(ctx));
+            //drawFunctions.push(useWebcam(ctx));
             // TODO Add after image processing and before UI
             drawFunctions.push(function () {
                 drawScanLines(ctx);

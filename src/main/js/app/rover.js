@@ -61,6 +61,10 @@
                     return $element[0].querySelector('.camera-container');
                 };
 
+                rover.update = function () {
+                    $scope.$apply();
+                };
+
                 $scope.debug = function () {
                     for (var el of $element[0].querySelectorAll('.camera-layer')) {
     					el.style.display = (el.style.display === 'none') ? 'inherit' : 'none';
