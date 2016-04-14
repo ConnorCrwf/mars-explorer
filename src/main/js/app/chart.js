@@ -1,7 +1,7 @@
 (function () {
 
     var updateIntervalMs = 1000;
-    var animate = true;
+    var animate = false;
 
     (function createLineChart() {
         var randomData = Array(20);
