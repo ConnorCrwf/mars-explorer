@@ -21,7 +21,7 @@
 </head>
 <body>
     <div class="main-container" ng-controller="StationController as station">
-        <input type="time" id="time" value="3:00" />
+        <input type="time" class="timer" data-default="03:00" value="03:00" />
         <rover ng-repeat="rover in [station.rover] track by rover.id"></rover>
     </div>
     <aside class="left-container">
@@ -46,5 +46,8 @@
         </div>
         <script src="app/chart.js"></script>
     <aside>
+    <div class="alert" onclick="window.location.reload();">
+        <h1 class="cyber-container">&nbsp;Mission Complete</h1>
+    </div>
 </body>
 </html>

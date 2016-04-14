@@ -102,7 +102,7 @@ body > aside {
     }
 }
 
-#time.text-warning {
+.timer.text-warning {
     color: $red;
     text-shadow: 0 0 10px $red;
 }
@@ -266,6 +266,36 @@ label.motor {
 .gauge-chart {
     width: 50%;
     display: inline;
+}
+
+.alert {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    font-size: 3em;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    h1 {
+        margin-top: 10%;
+        font-size: 3em;
+        padding: 0;
+        transition: width 1s ease-out;
+        width: 0;
+        overflow: hidden;
+        display: inline-block;
+    }
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+        h1 {
+            width: 60%;
+            padding: 30px 60px 20px;
+        }
+    }
 }
 
 .container {

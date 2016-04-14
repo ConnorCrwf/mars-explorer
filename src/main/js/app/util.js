@@ -16,6 +16,7 @@
         var warningTimeSec = 30;
         var timeout;
         var timerEl;
+        var alertEl;
         var tick = function () {
             var timeValue = timerEl.value.split(":");
             var time = parseInt(timeValue[0]) * 60 + parseInt(timeValue[1]) - 1;
@@ -26,21 +27,34 @@
             } else {
                 timerEl.classList.remove('text-warning');
             }
+            if (time <= 0) {
+                done();
+            }
             var minutes = Math.floor(time/60);
             var seconds = time % 60;
             minutes = (("" + minutes).length > 1) ? minutes : "0" + minutes;
             seconds = (("" + seconds).length > 1) ? seconds : "0" + seconds;
             timerEl.value = minutes + ":" + seconds;
         };
+        var done = function () {
+            if (!alertEl.classList.contains('visible')) {
+                alertEl.classList.add('visible');
+            }
+        };
 
-        this.setElement = function (el) {
+        this.setTimerElement = function (el) {
             timerEl = el;
+        };
+        this.setAlertElement = function (el) {
+            alertEl = el;
         };
 
         this.$get = ['$window', function ($window) {
             var that = this;
             return {
                 start: function () {
+                    var initialTime = timerEl.dataset['default'];
+                    timerEl.value = initialTime;
                     timeout = $window.setInterval(tick, 1000);
                 },
                 stop: function () {

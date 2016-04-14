@@ -13,7 +13,8 @@
             url: 'ws://192.168.1.200:8080/ws',
             realm: 'mars',
         });
-        timerProvider.setElement(document.querySelector('#time'));
+        timerProvider.setTimerElement(document.querySelector('.timer'));
+        timerProvider.setAlertElement(document.querySelector('.alert'));
     });
 
     app.controller('StationController', function (ar, leap, wamp, timer) {
