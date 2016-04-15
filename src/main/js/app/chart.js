@@ -110,8 +110,8 @@
             var chart = c3.generate({
                 bindto: el,
                 size: {
-                    width: 150,
-                    height: 150
+                    width: 100,
+                    height: 100
                 },
                 data: {
                     columns: [
