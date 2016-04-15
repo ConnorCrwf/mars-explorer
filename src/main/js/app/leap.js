@@ -61,15 +61,11 @@
                 var changeEvent = new Event('change');
 
                 if (frame.hands.length === 0) {
-                    rover.navigation.left = 0;
-                    rover.navigation.right = 0;
-                    rover.update();
-                    motorLeft.dispatchEvent(changeEvent);
-                    return;
+                    motorValues[0] = 0;
+                    motorValues[1] = 0;
                 }
 
                 if (previousMotorValues[0] !== motorValues[0] || previousMotorValues[1] !== motorValues[1]) {
-                    console.debug(handValues + " => " + motorValues);
                     rover.navigation.left = motorValues[0];
                     rover.navigation.right = motorValues[1];
                     rover.update();
