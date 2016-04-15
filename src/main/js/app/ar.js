@@ -43,16 +43,16 @@
 
             // Create draw functions
             var drawFunctions = [];
-            drawFunctions.push(useRover(ctx));
-            //drawFunctions.push(useWebcam(ctx));
-            // TODO Add after image processing and before UI
-            drawFunctions.push(function () {
-                drawScanLines(ctx);
-            });
+            //drawFunctions.push(useRover(ctx));
+            drawFunctions.push(useWebcam(ctx));
             drawFunctions.push(function (frameTime) {
                 if (!arController) { return; }
                 arController.time = frameTime;
                 arController.process();
+            });
+            // TODO Add after image processing and before UI
+            drawFunctions.push(function () {
+                drawScanLines(ctx);
             });
 
             // Main loop
@@ -174,7 +174,7 @@
         var center = marker.pos;
         var padding = 1.5;
         var slices = 9;
-        var maxTimeMs = 2 * 1e3;
+        var animationTimeMs = 2 * 1e3;
         var easing = 0.5;
 
         var associatedMarker = rover.markers[marker.id];
@@ -186,30 +186,54 @@
         drawPixelatedGrid(ctx, quadVerts, slices);
         ctx.restore();
 
-        if (associatedMarker.time <= maxTimeMs) {
-            ctx.save();
-            var amt = map(associatedMarker.time, 0, maxTimeMs / 2, 0, padding);
-            amt = Math.min(padding, amt);
-            ctx.translate(center[0] * (1 - amt), center[1] * (1 - amt));
-            ctx.scale(amt, amt);
+        var amt;
+        var statusText;
+        var detectionTimeMs = animationTimeMs / 2;
+        var completeNotificationTimeMs = 1000;
+        if (associatedMarker.time < detectionTimeMs) {
             ctx.shadowColor = 'rgba(52, 204, 255, 1)';
-            ctx.shadowBlur = 10;
-            ctx.lineWidth = 2;
             ctx.strokeStyle = 'rgba(52, 204, 255, 1)';
             ctx.fillStyle = 'rgba(52, 204, 255, 0.5)';
-            ctx.beginPath();
-            ctx.moveTo(quadVerts[0][0], quadVerts[0][1]);
-            ctx.lineTo(quadVerts[1][0], quadVerts[1][1]);
-            ctx.lineTo(quadVerts[2][0], quadVerts[2][1]);
-            ctx.lineTo(quadVerts[3][0], quadVerts[3][1]);
-            ctx.lineTo(quadVerts[0][0], quadVerts[0][1]);
-            ctx.fill();
-            ctx.stroke();
-            ctx.restore();
+            amt = map(associatedMarker.time, 0, detectionTimeMs, 0, padding);
+            amt = Math.min(padding, amt);
+            statusText = 'Scanning...';
+        } else {
+            if (associatedMarker.time < detectionTimeMs + completeNotificationTimeMs) {
+                statusText = 'Resource Found!';
+            }
+            ctx.shadowColor = 'rgba(4, 249, 0, 1)';
+            ctx.strokeStyle = 'rgba(4, 249, 0, 1)';
+            ctx.fillStyle = 'rgba(4, 249, 0, 0.5)';
+            amt = padding;
+        }
+        ctx.save();
+        ctx.translate(center[0] * (1 - amt), center[1] * (1 - amt));
+        ctx.scale(amt, amt);
+        ctx.shadowBlur = 10;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(quadVerts[0][0], quadVerts[0][1]);
+        ctx.lineTo(quadVerts[1][0], quadVerts[1][1]);
+        ctx.lineTo(quadVerts[2][0], quadVerts[2][1]);
+        ctx.lineTo(quadVerts[3][0], quadVerts[3][1]);
+        ctx.lineTo(quadVerts[0][0], quadVerts[0][1]);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        // Draw statusbar
+        if (statusText) {
+            var barHeight = 50;
+            var fontSize = 28;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            ctx.fillRect(0, ctx.canvas.height - barHeight, ctx.canvas.width, barHeight);
+            ctx.font = fontSize + 'px "Share Tech Mono", "Roboto Mono", monospace';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillText(statusText.toUpperCase(), 20, ctx.canvas.height - barHeight + (barHeight + fontSize) / 2);
         }
 
         // Update found marker
-        if (associatedMarker.time >= maxTimeMs) {
+        if (associatedMarker.time >= animationTimeMs) {
             associatedMarker.found = true;
         }
         associatedMarker.time += frameTime;
