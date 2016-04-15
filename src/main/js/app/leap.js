@@ -12,6 +12,7 @@
 
         var start = function (rover) {
             var that = this;
+            var motorSpeed = 0.5;
             var motorLeft = document.querySelector('.motor-left');
             var motorRight = document.querySelector('.motor-right');
 
@@ -38,9 +39,9 @@
                     if (value > _config.stopZone[0] && value < _config.stopZone[1]) {
                         value = 0;
                     } else if (value >= _config.stopZone[1]) {
-                        value = map(value, _config.stopZone[1], _config.max, 0, -1);
+                        value = map(value, _config.stopZone[1], _config.max, 0, -motorSpeed);
                     } else {
-                        value = map(value, _config.min, _config.stopZone[0], 1, 0);
+                        value = map(value, _config.min, _config.stopZone[0], motorSpeed, 0);
                     }
                     value = value.toFixed(_config.precision);
                     motorValues[handIndex] = value;
