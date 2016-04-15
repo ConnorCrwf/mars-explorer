@@ -1,3 +1,4 @@
+$background_color: #101010;
 $cyber: #34ccff;
 $cyber_transparent: rgba($cyber, 0.5);
 $red: #d65d5f;
@@ -27,7 +28,7 @@ $font: "Share Tech Mono", "Roboto Mono", monospace;
 body {
     @extend .grid;
     @include text;
-    background-color: #101010;
+    background-color: $background_color;
     box-sizing: border-box;
     padding: 50px;
     text-align: center;
@@ -167,7 +168,6 @@ label.motor {
 
     .marker {
         display: inline-block;
-        line-height: 5em;
         margin: 3px 0;
     }
     label {
@@ -177,6 +177,11 @@ label.motor {
         background-color: transparent;
         border: 1px dotted;
         opacity: 0.5;
+        cursor: pointer;
+
+        object {
+            pointer-events: none;
+        }
     }
 
     input[type=checkbox] {
@@ -185,6 +190,7 @@ label.motor {
         &:checked + label {
             background-color: #34ccff;
         }
+
     }
 }
 

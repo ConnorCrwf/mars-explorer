@@ -1,4 +1,6 @@
 <div class="marker">
     <input type="checkbox" name="{{ marker.id }}" id="marker-{{ marker.id }}" class="marker" ng-model="marker.found" ng-checked="{{ marker.found }}" />
-    <label for="marker-{{ marker.id }}" class="marker">{{ marker.id }}</label>
+    <label for="marker-{{ marker.id }}" class="marker">
+        <object type="image/svg+xml" data="img/markers/{{ marker.id }}.svg"></object>
+    </label>
 </div>

@@ -131,7 +131,6 @@ label.motor {
   width: 50%; }
   .marker-container .marker {
     display: inline-block;
-    line-height: 5em;
     margin: 3px 0; }
   .marker-container label {
     width: 100px;
@@ -139,7 +138,10 @@ label.motor {
     display: inline-block;
     background-color: transparent;
     border: 1px dotted;
-    opacity: 0.5; }
+    opacity: 0.5;
+    cursor: pointer; }
+    .marker-container label object {
+      pointer-events: none; }
   .marker-container input[type=checkbox] {
     display: none; }
     .marker-container input[type=checkbox]:checked + label {
