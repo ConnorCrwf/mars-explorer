@@ -6,6 +6,7 @@ $red_transparent: rgba($red, 0.5);
 $cyber_padding: 10px;
 $grid_color: rgba($cyber, 0.05);
 $white_grid: rgba(#FFF, 0.2);
+$satellite_feed_axis_color: rgba($cyber, 0.2);
 $font: "Share Tech Mono", "Roboto Mono", monospace;
 
 .grid {
@@ -194,12 +195,16 @@ label.motor {
     }
 }
 
+$satellite_feed_width: 400px;
+$satellite_feed_height: 300px;
 .satellite-feed {
     p {
-        margin-bottom: 5px;
+        margin: 25px 0 10px;
     }
     img {
         filter: grayscale(1);
+        width: $satellite_feed_width;
+        height: $satellite_feed_height;
     }
     span {
         position: relative;
@@ -225,9 +230,10 @@ label.motor {
         border: 0px;
         margin: 0;
         display: inline-block;
+        color: $satellite_feed_axis_color;
         &.vertical {
-            background-image: linear-gradient(to bottom, $white_grid 1px, transparent 1px);
-            height: 240px;
+            background-image: linear-gradient(to bottom, $satellite_feed_axis_color 1px, transparent 1px);
+            height: $satellite_feed_height;
             width: 5px;
             &:nth-of-type(even) {
                 border-left: 1px solid;
@@ -237,11 +243,11 @@ label.motor {
             }
         }
         &.horizontal {
-            background-image: linear-gradient(to right, $white_grid 1px, transparent 1px);
+            background-image: linear-gradient(to right, $satellite_feed_axis_color 1px, transparent 1px);
             height: 5px;
-            width: 320px;
+            width: $satellite_feed_width;
             display: block;
-            margin: 0 auto;
+            margin: 7px auto 0;
             border-top: 1px solid;
         }
     }

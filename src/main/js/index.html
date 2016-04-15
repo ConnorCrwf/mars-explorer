@@ -25,10 +25,15 @@
         <rover ng-repeat="rover in [station.rover] track by rover.id"></rover>
     </div>
     <aside class="left-container">
-        <div class="satellite-feed container">
-            <p>Satellite Feed</p>
+        <div class="satellite-feed">
+            <p>Satellite Feed - A</p>
             <hr class="vertical"/>
-            <span><img src="" width="320px" height="240px"></img></span>
+            <span><img src="http://192.168.200:8081/?action=stream"></img></span>
+            <hr class="vertical"/>
+            <hr class="horizontal"/>
+            <p>Satellite Feed - B</p>
+            <hr class="vertical"/>
+            <span><img src="http://192.168.1.200:8082/?action=stream"></img></span>
             <hr class="vertical"/>
             <hr class="horizontal"/>
         </div>

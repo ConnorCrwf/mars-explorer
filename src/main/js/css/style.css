@@ -148,9 +148,11 @@ label.motor {
       background-color: #34ccff; }
 
 .satellite-feed p {
-  margin-bottom: 5px; }
+  margin: 25px 0 10px; }
 .satellite-feed img {
-  filter: grayscale(1); }
+  filter: grayscale(1);
+  width: 400px;
+  height: 300px; }
 .satellite-feed span {
   position: relative;
   display: inline-block; }
@@ -168,21 +170,22 @@ label.motor {
   background-size: 10px 10px;
   border: 0px;
   margin: 0;
-  display: inline-block; }
+  display: inline-block;
+  color: rgba(52, 204, 255, 0.2); }
   .satellite-feed hr.vertical {
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-    height: 240px;
+    background-image: linear-gradient(to bottom, rgba(52, 204, 255, 0.2) 1px, transparent 1px);
+    height: 300px;
     width: 5px; }
     .satellite-feed hr.vertical:nth-of-type(even) {
       border-left: 1px solid; }
     .satellite-feed hr.vertical:nth-of-type(odd) {
       border-right: 1px solid; }
   .satellite-feed hr.horizontal {
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-image: linear-gradient(to right, rgba(52, 204, 255, 0.2) 1px, transparent 1px);
     height: 5px;
-    width: 320px;
+    width: 400px;
     display: block;
-    margin: 0 auto;
+    margin: 7px auto 0;
     border-top: 1px solid; }
 
 .c3 line, .c3 path {
