@@ -6,6 +6,7 @@
     (function createLineChart() {
         var randomData = Array(20);
         var last = 0;
+        var el = document.querySelector('.line-chart');
         for (var i = 0; i < randomData.length; i++) {
             var num = last + (Math.random() * 2 - 1);
             randomData[i] = num;
@@ -14,7 +15,7 @@
         randomData.unshift('header');
 
         var chart = c3.generate({
-            bindto: '#chart-1',
+            bindto: el,
             data: {
                 columns: [
                     randomData
@@ -55,9 +56,9 @@
     }());
 
     (function createGaugeCharts() {
-        var gaugeElements = document.querySelectorAll('.gauge-chart');
-        var gaugeCharts = [];
-        for (var el of gaugeElements) {
+        var elements = document.querySelectorAll('.gauge-chart');
+        var charts = [];
+        for (var el of elements) {
             var value = Math.random();
             var chart = c3.generate({
                 bindto: el,
@@ -86,15 +87,58 @@
                 },
                 interaction: { enabled: false },
             });
-            gaugeCharts.push(chart);
+            charts.push(chart);
         }
 
         if (!animate) { return; }
         window.setInterval(function () {
-            for (var chart of gaugeCharts) {
+            for (var chart of charts) {
                 var value = Math.random();
                 chart.load({
                     columns: [['data', value]]
+                });
+            }
+        }, updateIntervalMs);
+    }());
+
+    (function createDonutCharts() {
+        var elements = document.querySelectorAll('.donut-chart');
+        var charts = [];
+        for (var el of elements) {
+            console.log('donut!');
+            var value = Math.random();
+            var chart = c3.generate({
+                bindto: el,
+                size: {
+                    width: 150,
+                    height: 150
+                },
+                data: {
+                    columns: [
+                        ['fg', value],
+                        ['bg', 1 - value],
+                    ],
+                    colors: {
+                        fg: 'rgba(52, 204, 255, 1)',
+                        bg: 'rgba(52, 204, 255, 0.5)'
+                    },
+                    type : 'donut'
+                },
+                legend: { hide: true },
+                interaction: { enabled: false },
+                donut: {
+                    label : { show: false }
+                }
+            });
+            charts.push(chart);
+        }
+
+        if (!animate) { return; }
+        window.setInterval(function () {
+            for (var chart of charts) {
+                var value = Math.random();
+                chart.load({
+                    columns: [['fg', value], ['bg', 1 - value]]
                 });
             }
         }, updateIntervalMs);

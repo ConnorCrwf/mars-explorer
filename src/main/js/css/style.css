@@ -171,9 +171,9 @@ label.motor {
   border: 0px;
   margin: 0;
   display: inline-block;
-  color: rgba(52, 204, 255, 0.2); }
+  color: rgba(52, 204, 255, 0.5); }
   .satellite-feed hr.vertical {
-    background-image: linear-gradient(to bottom, rgba(52, 204, 255, 0.2) 1px, transparent 1px);
+    background-image: linear-gradient(to bottom, rgba(52, 204, 255, 0.5) 1px, transparent 1px);
     height: 300px;
     width: 5px; }
     .satellite-feed hr.vertical:nth-of-type(even) {
@@ -181,7 +181,7 @@ label.motor {
     .satellite-feed hr.vertical:nth-of-type(odd) {
       border-right: 1px solid; }
   .satellite-feed hr.horizontal {
-    background-image: linear-gradient(to right, rgba(52, 204, 255, 0.2) 1px, transparent 1px);
+    background-image: linear-gradient(to right, rgba(52, 204, 255, 0.5) 1px, transparent 1px);
     height: 5px;
     width: 400px;
     display: block;
@@ -204,9 +204,16 @@ label.motor {
   font-family: "Share Tech Mono", "Roboto Mono", monospace;
   stroke: rgba(52, 204, 255, 0.5); }
 
-.gauge-chart {
-  width: 50%;
-  display: inline; }
+.guage-charts {
+  margin-bottom: 50px; }
+  .guage-charts .gauge-chart {
+    width: 50%;
+    display: inline; }
+
+.donut-charts {
+  margin-top: 10px; }
+  .donut-charts .donut-chart {
+    display: inline-block; }
 
 .alert {
   position: absolute;

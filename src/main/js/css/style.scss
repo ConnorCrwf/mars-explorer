@@ -230,9 +230,9 @@ $satellite_feed_height: 300px;
         border: 0px;
         margin: 0;
         display: inline-block;
-        color: $satellite_feed_axis_color;
+        color: $cyber_transparent;
         &.vertical {
-            background-image: linear-gradient(to bottom, $satellite_feed_axis_color 1px, transparent 1px);
+            background-image: linear-gradient(to bottom, $cyber_transparent 1px, transparent 1px);
             height: $satellite_feed_height;
             width: 5px;
             &:nth-of-type(even) {
@@ -243,7 +243,7 @@ $satellite_feed_height: 300px;
             }
         }
         &.horizontal {
-            background-image: linear-gradient(to right, $satellite_feed_axis_color 1px, transparent 1px);
+            background-image: linear-gradient(to right, $cyber_transparent 1px, transparent 1px);
             height: 5px;
             width: $satellite_feed_width;
             display: block;
@@ -275,9 +275,19 @@ $satellite_feed_height: 300px;
     stroke: $cyber_transparent;
 }
 
-.gauge-chart {
-    width: 50%;
-    display: inline;
+.guage-charts {
+    margin-bottom: 50px;
+    .gauge-chart {
+        width: 50%;
+        display: inline;
+    }
+}
+
+.donut-charts {
+    margin-top: 10px;
+    .donut-chart {
+        display: inline-block;
+    }
 }
 
 .alert {
