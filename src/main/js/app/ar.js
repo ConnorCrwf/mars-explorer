@@ -43,8 +43,8 @@
 
             // Create draw functions
             var drawFunctions = [];
-            //drawFunctions.push(useRover(ctx));
-            drawFunctions.push(useWebcam(ctx));
+            drawFunctions.push(useRover(ctx));
+            //drawFunctions.push(useWebcam(ctx));
             drawFunctions.push(function (frameTime) {
                 if (!arController) { return; }
                 arController.time = frameTime;
