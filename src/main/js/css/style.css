@@ -150,9 +150,10 @@ label.motor {
 .satellite-feed p {
   margin: 25px 0 10px; }
 .satellite-feed img {
-  filter: grayscale(1);
   width: 400px;
   height: 300px; }
+  .satellite-feed img.grayscale {
+    filter: grayscale(1); }
 .satellite-feed span {
   position: relative;
   display: inline-block; }

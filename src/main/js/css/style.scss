@@ -202,9 +202,11 @@ $satellite_feed_height: 300px;
         margin: 25px 0 10px;
     }
     img {
-        filter: grayscale(1);
         width: $satellite_feed_width;
         height: $satellite_feed_height;
+        &.grayscale {
+            filter: grayscale(1);
+        }
     }
     span {
         position: relative;
