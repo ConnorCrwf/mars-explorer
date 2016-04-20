@@ -1,0 +1,14 @@
+{
+  "name": "jsartoolkit5",
+  "homepage": "https://github.com/artoolkit/jsartoolkit5",
+  "_release": "8510249f1d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8510249f1d3c20d24bcce2350b95b67c28495971"
+  },
+  "_source": "git://github.com/artoolkit/jsartoolkit5.git",
+  "_target": "*",
+  "_originalSource": "artoolkit/jsartoolkit5",
+  "_direct": true
+}
