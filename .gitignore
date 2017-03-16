@@ -3,5 +3,7 @@
 
 .crossbar/node.pid
 .crossbar/node.key
+.crossbar/key.priv
+.crossbar/key.pub
 
 .sass-cache
