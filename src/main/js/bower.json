@@ -1,13 +1,13 @@
 {
-  "name": "mars",
+  "name": "mars-explorer",
   "authors": [
     "Joe Mirizio <joe@joemirizio.com>"
   ],
-  "description": "",
+  "description": "Robotic Exploration of the Next Frontier STEM Activity",
   "main": "",
   "moduleType": [],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/joemirizio/mars-explorer",
   "private": true,
   "ignore": [
     "**/.*",
@@ -18,10 +18,10 @@
   ],
   "dependencies": {
     "angular": "^1.5.0",
-    "autobahnjs": "autobahn#^0.9.9",
+    "autobahn": "^0.11.2",
+    "c3": "^0.4.11",
+    "jsartoolkit5": "*",
     "leapjs": "^0.6.4",
-    "normalize-css": "^4.0.0",
-    "jsartoolkit5": "artoolkit/jsartoolkit5",
-    "c3": "^0.4.10"
+    "normalize-css": "^5.0.0"
   }
 }
